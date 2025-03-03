@@ -58,3 +58,15 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+# 2차원 격자(ex.바둑판)에서 대각선인지 판단할 때 사용하는 아이디어
+## `abs(row1 - row2) == abs(col1 - col2)` 가 대각선을 의미함!
+### why? 우리가 생각하는 45도 대각선 -> **직선의 기울기**
+- 45도 대각선 == 기울기(m)가 ±1 인 직선   
+  ![image](https://github.com/user-attachments/assets/252e7928-75ae-4a99-86c3-6083365283dc)   
+즉, ![image](https://github.com/user-attachments/assets/81b60d78-a493-48fc-b9e6-515cd0874daf) 이 성립하면 두 점이 대각서에 있다는 의미
+
+#### 체스판같은 정수 좌표만 있는 격자에서는 기울기를 계산하는 대신, 행(row) 차이와 열(col) 차이만 비교하면 대각선 판별 가능
+- 즉, ![image](https://github.com/user-attachments/assets/1b1ddb5b-2bd8-4059-85cf-bca1274e3b9d)이 성립하면 같은 대각선
+
+
