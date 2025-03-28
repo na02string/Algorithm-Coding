@@ -1,3 +1,4 @@
+# bfs로 거리를 측정할 수 있다
 from collections import deque
 
 n,m = map(int, input().split())
