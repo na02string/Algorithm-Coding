@@ -1,5 +1,4 @@
-# n = int(input())
-n = 5
+n = int(input())
 # Please write your code here.
 def fun(n):
     if n == 0:
