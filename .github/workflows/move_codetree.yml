@@ -14,11 +14,9 @@ jobs:
     - name: Move CodeTree folders into /코드트리
       run: |
         mkdir -p 코드트리
-        for folder in $(find . -maxdepth 1 -type d -name "20*" -print); do
+        for folder in $(find . -maxdepth 1 -type d -name "2*" ! -name ".git" ! -name "코드트리"); do
           folder_name=$(basename "$folder")
-          mkdir -p "코드트리/$folder_name"
-          mv "$folder"/* "코드트리/$folder_name/" || true
-          rm -r "$folder"
+          mv "$folder" "코드트리/$folder_name"
         done
 
     - name: Commit and push changes
