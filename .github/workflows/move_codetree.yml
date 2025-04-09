@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write  # ✅ push를 위해 write 권한 부여
+
 jobs:
   organize_codetree:
     runs-on: ubuntu-latest
@@ -11,12 +14,15 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v3
 
-    - name: Move CodeTree folders into /코드트리
+    - name: Move CodeTree folders into /코드트리 (Merge-safe)
       run: |
         mkdir -p 코드트리
+        shopt -s dotglob
         for folder in $(find . -maxdepth 1 -type d -name "2*" ! -name ".git" ! -name "코드트리"); do
           folder_name=$(basename "$folder")
-          mv "$folder" "코드트리/$folder_name"
+          mkdir -p "코드트리/$folder_name"
+          mv "$folder"/* "코드트리/$folder_name/" || true
+          rmdir "$folder" || true
         done
 
     - name: Commit and push changes
@@ -24,5 +30,5 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "actions@github.com"
         git add .
-        git commit -m "Automatically moved CodeTree files into /코드트리" || echo "No changes to commit"
+        git commit -m "자동으로 CodeTree 폴더로 정리됨" || echo "No changes to commit"
         git push
