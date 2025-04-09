@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: write  # ✅ push를 위해 write 권한 부여
+  contents: write  # ✅ push 권한을 주기 위해 꼭 필요
 
 jobs:
   organize_codetree:
@@ -14,15 +14,16 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v3
 
-    - name: Move CodeTree folders into /코드트리 (Merge-safe)
+    - name: Move CodeTree folders into /코드트리 (덮어쓰기 보장)
       run: |
         mkdir -p 코드트리
         shopt -s dotglob
         for folder in $(find . -maxdepth 1 -type d -name "2*" ! -name ".git" ! -name "코드트리"); do
           folder_name=$(basename "$folder")
           mkdir -p "코드트리/$folder_name"
-          mv "$folder"/* "코드트리/$folder_name/" || true
-          rmdir "$folder" || true
+          # rsync 사용: 기존 내용 삭제하고 정확히 복사 → 덮어쓰기 가능
+          rsync -a --delete "$folder"/ "코드트리/$folder_name/"
+          rm -r "$folder" || true
         done
 
     - name: Commit and push changes
