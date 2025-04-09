@@ -1,4 +1,4 @@
-n = 5
+n = int(input())
 
 # Please write your code here.
 def fun(n):
