@@ -1,0 +1,30 @@
+name: Move CodeTree Files
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  organize_codetree:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Move CodeTree folders into /코드트리
+      run: |
+        mkdir -p 코드트리
+        for folder in $(find . -maxdepth 1 -type d -name "20*" -print); do
+          folder_name=$(basename "$folder")
+          mkdir -p "코드트리/$folder_name"
+          mv "$folder"/* "코드트리/$folder_name/" || true
+          rm -r "$folder"
+        done
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Automatically moved CodeTree files into /코드트리" || echo "No changes to commit"
+        git push
