@@ -1,8 +1,7 @@
 import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**6)
-
-n, m = map(int, input().split())
+n, m = map(int, input().split())  # n: 정점 수, m: 간선 수
 board = [[] for _ in range(n + 1)]
 
 for _ in range(m):
@@ -14,15 +13,16 @@ visited = [False] * (n + 1)
 answer = 0
 
 def dfs(start_node):
-    stack = [start_node]
+    s = [start_node]
     visited[start_node] = True
 
-    while stack:
-        cur = stack.pop()
+    while s:
+        cur = s.pop()
         for next in board[cur]:
-            if not visited[next]:
-                visited[next] = True
-                stack.append(next)
+            if visited[next]:
+                continue
+            s.append(next)
+            visited[next] = True
 
 for i in range(1, n + 1):
     if not visited[i]:
