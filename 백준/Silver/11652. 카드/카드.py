@@ -1,28 +1,23 @@
 n = int(input())
-from collections import deque
-arr = []
-for _ in range(n):
-    arr.append(int(input()))
-arr.sort()
-arr = deque(arr)
+arr = [int(input()) for _ in range(n)]
 
-val = arr.popleft()
-count = 1
-max_count = 0
-max_val = val
-while arr:
-    i = arr.popleft()
-    if val == i:
-        count += 1
-        val = i
+arr.sort()
+
+cnt = 0
+mxval = -(1 << 62)  # 아주 작은 수
+mxcnt = 0
+
+for i in range(n):
+    if i == 0 or arr[i] == arr[i - 1]:
+        cnt += 1
     else:
-        if count>max_count:
-            max_count = count
-            max_val = val
-        val = i
-        count = 1
-# 마지막 그룹 체크
-if count > max_count:
-    max_val = val
-     
-print(max_val)
+        if cnt > mxcnt:
+            mxcnt = cnt
+            mxval = arr[i - 1]
+        cnt = 1  # 새로운 숫자 시작
+
+# 마지막 숫자 그룹 체크
+if cnt > mxcnt:
+    mxval = arr[n - 1]
+
+print(mxval)
